@@ -18,4 +18,5 @@ int main()
         r.replace(i, 2, "o");
     }
     std::cout << r << '\n';    
+    std::cout << "now?";
 }
