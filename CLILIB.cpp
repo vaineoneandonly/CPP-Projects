@@ -1,22 +1,19 @@
 #include <iostream>
 
+struct Triangle
+{
+    int x, y;
+    int width, height;
+
+    char key;
+};
+
 struct Rect
 {
     int x, y;
     int width, height;
 
     char key;
-
-    Rect(int nx, int ny, int nw, int nh, char newKey)
-    {
-        x = nx;
-        y = ny;
-
-        width = nw;
-        height = nh;
-
-        key = newKey;
-    }
 };
 
 struct Screen

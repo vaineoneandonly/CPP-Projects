@@ -42,6 +42,18 @@ struct newScreen
             }
         }
     }
+
+    void paintTriangle(const Triangle &t, bool hollow)
+    {
+
+        for (int i = 0 + t.y; i <= 2 + t.y; ++ i)
+        {
+            for (int nx = t.x + i; nx < t.x + t.width + i; ++nx)
+            {
+                (*this)(i, nx) = t.key;
+            }
+        }
+    }
 };
 
 std::ostream &operator<<(std::ostream &os, const newScreen &s)
