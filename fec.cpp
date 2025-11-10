@@ -1,26 +1,32 @@
 #include <iostream>
 #include "CLILIB.cpp"
+#include "newCLIBLIB.cpp"
 
-int main()
+void old()
 {
     Screen background {9, 16, 'x'};
     Screen composite{9, 16, 'x'};
 
-    Rect r1 {3, 0, 5, 5};
+    Rect r1 {3, 0, 5, 5, 'c'};
 
-    for (int i = 0; i < background.screenHeight; ++i)
-    {
-        for (int j = 0; j < background.screenWidth; ++j)
-        {    
-            std::string a {background.map.at(i * j)};
-            composite.map.append(a);
-        }
-    }   
-    
-    for (int i = r1.x; i < r1.l; ++i)
-    {
-        composite.map.replace(i, 0, "1");
-    }
     std::cout << composite;
-    
+
+    composite.map.replace(1, 1, "c");
+    std::cout << composite;
 }
+
+void newTests()
+{
+    Rect r1{3, 3, 8, 5, 'c'};
+    newScreen composite{16, 9, 'h'};
+
+    composite.paintRect(r1, true);
+
+    std::cout << composite;
+}
+
+int main()
+{
+    newTests();
+}
+

@@ -3,7 +3,20 @@
 struct Rect
 {
     int x, y;
-    int h, l;
+    int width, height;
+
+    char key;
+
+    Rect(int nx, int ny, int nw, int nh, char newKey)
+    {
+        x = nx;
+        y = ny;
+
+        width = nw + 2;
+        height = nh + 2;
+
+        key = newKey;
+    }
 };
 
 struct Screen
@@ -25,6 +38,17 @@ struct Screen
             }
         }
     }
+
+    void paintRect(const Rect &r, int flags)
+    {
+        for (int ny = r.y; ny <= r.height; ++ny)
+        {
+            for (int nx = r.x; nx <= r.width; ++nx)
+            {
+                (ny, nx) = '3';
+            }
+        }
+    }
 };
 std::ostream &operator<<(std::ostream &os, const Screen &s)
 {
@@ -38,11 +62,4 @@ std::ostream &operator<<(std::ostream &os, const Screen &s)
     }
     
     return os;
-}
-
-std::ostream &operator<<(std::ostream &os, const Rect &r)
-{
-    os << "x: " << r.x << "\ny: " << r.y << "\nheight:" << r.h << "\nlength: " << r.l << '\n';
-
-    return os;        
 }
