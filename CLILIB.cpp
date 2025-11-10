@@ -12,8 +12,8 @@ struct Rect
         x = nx;
         y = ny;
 
-        width = nw + 2;
-        height = nh + 2;
+        width = nw;
+        height = nh;
 
         key = newKey;
     }

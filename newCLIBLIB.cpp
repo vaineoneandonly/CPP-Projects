@@ -24,18 +24,18 @@ struct newScreen
 
     void paintRect(const Rect &r, bool hollow)
     {
-        for (int ny = r.y; ny <= r.height; ++ny)
+        for (int ny = r.y; ny < r.y + r.height; ++ny)
         {
-            for (int nx = r.x; nx <= r.width; ++nx)
+            for (int nx = r.x; nx < r.x + r.width; ++nx)
             {
                 (*this)(ny, nx) = r.key; 
             }
         }
         if (hollow)
         {
-            for (int ny = r.y + 1; ny <= r.height - 1; ++ny)
+            for (int ny = r.y + 1; ny < r.y + r.height - 1; ++ny)
             {
-                for (int nx = r.x + 1; nx <= r.width - 1; ++nx)
+                for (int nx = r.x + 1; nx < r.x + r.width - 1; ++nx)
                 {
                     (*this)(ny, nx) = key;
                 }

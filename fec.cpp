@@ -17,10 +17,13 @@ void old()
 
 void newTests()
 {
-    Rect r1{3, 3, 8, 5, 'c'};
+    Rect r1{3, 3, 3, 3, 'c'};
+    Rect r2{1, 1, 2, 5, '4'};
+
     newScreen composite{16, 9, 'h'};
 
     composite.paintRect(r1, true);
+    composite.paintRect(r2, false);
 
     std::cout << composite;
 }
