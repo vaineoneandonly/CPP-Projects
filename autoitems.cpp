@@ -5,7 +5,7 @@ int main()
 {
     std::string modelo {"I 656-7446 00                                            PC 6567446#00                   1104"};
     
-    std::ifstream products{"prodAndVer"};
+    std::ifstream products{"prodAndVer"}; // <<<
     std::string prod {"6138152	90"};
 
     std::ofstream newProds{"newProds"};
