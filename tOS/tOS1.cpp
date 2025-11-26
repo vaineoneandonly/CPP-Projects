@@ -19,23 +19,27 @@ int main()
                         {
                             {"o", "as", "a", "amos", "ais", "am"},
                             {"o", "es", "e", "emos", "eis", "em"},
-                            {"o", "es", "e", "emos", "eis", "em"},
+                            {"o", "es", "e", "imos",  "is", "em"},
                         };
 
-
-    std::string verboAtual {"correr"};
-    
-    std::string terminaCom {verboAtual.substr( verboAtual.length()-2, verboAtual.length()-1)};
-    int c//ategoria
+        
+    for (int j = 0; j < 3; ++j)
     {
-        terminaCom == "ar" ? 0 : 
-        terminaCom == "er" ? 1 :
-        terminaCom == "ir" ? 2 : 
-        3
-    };
+        std::string verboAtual {verbos[j]};
+        std::string terminaCom {verboAtual.substr( verboAtual.length()-2, verboAtual.length()-1)};
+        
+        int c//ategoria
+        {
+            terminaCom == "ar" ? 0 : 
+            terminaCom == "er" ? 1 :
+            terminaCom == "ir" ? 2 : 
+            3
+        };
 
-    for (int i = 0; i < 6; ++i)
-    {
-        std::cout << verboAtual.substr(0, verboAtual.length()-2) << PresenteIndicativo[c][i] << '\n';
+        for (int i = 0; i < 6; ++i)
+        {
+            std::cout << verboAtual.substr(0, verboAtual.length()-2) << PresenteIndicativo[c][i] << '\n';
+        }
+        std::cout << '\n';
     }
 }
