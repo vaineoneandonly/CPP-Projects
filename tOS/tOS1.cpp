@@ -8,7 +8,7 @@ enum Conjugacao
     Nos,
     Vos,
     Eles,
-};
+};  
 
 int main()
 {
@@ -22,7 +22,6 @@ int main()
                             {"o", "es", "e", "imos",  "is", "em"},
                         };
 
-        
     for (int j = 0; j < 3; ++j)
     {
         std::string verboAtual {verbos[j]};
