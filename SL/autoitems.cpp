@@ -4,7 +4,7 @@
 int main()
 {
     std::string modelo       {"I 656-7446 00                                            PC 6567446#00                   962 "};
-    std::string modeloDAFMAG {"I ATRC292  00                                            PC ATRC292                      962 "};
+    std::string modeloDAFMAG {"I ATRC292                                                PC ATRC292#VV                   962 "};
 
     std::ifstream products{"prodAndVerDAFMAGIUSFILIAL"}; // <<<
     std::string prod {"6138152	90"};
@@ -26,8 +26,8 @@ int main()
         modeloDAFMAG.replace(2, 7, justProd);
         modeloDAFMAG.replace(60, 7, justProd);
 
-        modeloDAFMAG.replace(11, 2, prodVer);
-        //modeloDAFMAG.replace(68, 2, prodVer);
+        //modeloDAFMAG.replace(11, 2, prodVer);
+        modeloDAFMAG.replace(68, 2, prodVer);
         
         newProds << modeloDAFMAG << '\n';
 
