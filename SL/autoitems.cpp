@@ -3,19 +3,34 @@
 
 void paraVOLVO()
 {
-    std::string modelo {"I xx-yyyy vv                                              PC xxyyyy#vv                    "};
-    std::string prodVOLVO {"6884427	FITA                                              "};
+    std::string inputProd {"16929621 SAFETY DECAL WARNING HIGH VOLTAGE                 "};
     
-    int i {static_cast<int>(prodVOLVO.find_first_of('	'))};
+    std::ifstream products {"modeloProdutosVOLVOPEDER"};
+    std::ofstream prn {"novosProdutosVOLVOPEDER"};
 
-    std::string prod {prodVOLVO.substr(0, i)};
+    while (std::getline(products, inputProd))
+    {
+        int i {static_cast<int>(inputProd.find_first_of(' '))};
 
-    std::cout << prod << '\n';
-}
+        std::string prod {inputProd.substr(0, i)};
+        std::string desc2 {"                                   "};
+        std::string desc {inputProd.substr(i+1, 35)};
+
+        desc2.replace(0, desc.size(), desc);
+
+        std::string outputProd {"I                                                         PC                              "};
+        outputProd.replace(2, prod.size(), prod);
+        outputProd.replace(61, prod.size(), prod);
+    
+        outputProd.replace(22, 35, desc2);
+        
+        prn << outputProd << '\n';
+    }
+}    
 
 void paraCAT()
 {
- std::string modelo       {"I xx-yyyy vv                                              PC xxyyyy#vv                    "};
+    std::string modelo       {"I xxxxxxxxxx                                              PC xxyyyy#vv                    "};
     
     std::ifstream products{"modeloProdutosVEXSP2"}; // <<<
     std::string prod {"1P-2807 07                     	-                                                 "};
