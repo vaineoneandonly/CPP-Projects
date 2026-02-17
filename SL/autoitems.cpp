@@ -11,7 +11,9 @@ void checkValueOfCharInString(std::string s)
 
 void JACTOparaGOLIN()
 {
-    std::string inputLine {"0003930044;TCC 0 89,00 X 4,50;"};
+    std::string inputLine {"0003930509;DISPOSITIVO DE CONTROLE DOBRA 1282906/1282907 - Nº 970013272;1282907/1282906 -CONTROLE"};
+
+    int maximumDescriptionSize {35};
 
     int firstCommaIndex         {static_cast<int>(inputLine.find_first_of(';'))};
     int secondCommaIndex        {static_cast<int>(inputLine.substr(firstCommaIndex + 1).find_first_of(';')) + firstCommaIndex + 1};
@@ -26,7 +28,10 @@ void JACTOparaGOLIN()
     int externalProductSize     {static_cast<int>(inputLine.find_first_of('\n')) - 1};
 
     std::string localProduct    {inputLine.substr(localProductStart, localProductSize)};
-    std::string description     {inputLine.substr(descriptionStart, descriptionSize)};
+
+    std::string description     {inputLine.substr(descriptionStart, descriptionSize)};    
+    if (description.size() > maximumDescriptionSize) description.resize(maximumDescriptionSize);
+
     std::string externalProduct {inputLine.substr(externalProductStart, externalProductSize)};
 
     std::cout   << localProduct     << " ends localProduct \n"
