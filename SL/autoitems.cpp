@@ -1,6 +1,39 @@
 #include <iostream>
 #include <fstream>
 
+void checkValueOfCharInString(std::string s)
+{
+    for (char c : s)
+    {
+        std::cout << c << "-" << static_cast<int>(c) << '\n';
+    }
+}
+
+void JACTOparaGOLIN()
+{
+    std::string inputLine {"0003930044;TCC 0 89,00 X 4,50;"};
+
+    int firstCommaIndex         {static_cast<int>(inputLine.find_first_of(';'))};
+    int secondCommaIndex        {static_cast<int>(inputLine.substr(firstCommaIndex + 1).find_first_of(';')) + firstCommaIndex + 1};
+
+    int localProductStart       {0};
+    int localProductSize        {firstCommaIndex};
+
+    int descriptionStart        {firstCommaIndex + 1};
+    int descriptionSize         {secondCommaIndex - firstCommaIndex - 1};
+
+    int externalProductStart    {secondCommaIndex + 1};
+    int externalProductSize     {static_cast<int>(inputLine.find_first_of('\n')) - 1};
+
+    std::string localProduct    {inputLine.substr(localProductStart, localProductSize)};
+    std::string description     {inputLine.substr(descriptionStart, descriptionSize)};
+    std::string externalProduct {inputLine.substr(externalProductStart, externalProductSize)};
+
+    std::cout   << localProduct     << " ends localProduct \n"
+                << description      << " ends description \n"
+                << externalProduct  << " ends externalProduct\n";
+}
+
 void paraVOLVO()
 {
     std::string inputProd {"16929621 SAFETY DECAL WARNING HIGH VOLTAGE                 "};
@@ -81,5 +114,7 @@ void paraCAT()
 
 int main()
 {
-    paraVOLVO();
+    //paraVOLVO();
+    JACTOparaGOLIN();
+    //checkValueOfCharInString("0003930705	SAC R  80,00 X 100,00 X  8,00	P0000000426");
 }
