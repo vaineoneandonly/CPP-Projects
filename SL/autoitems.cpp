@@ -11,6 +11,11 @@ void checkValueOfCharInString(std::string s)
 
 void JACTOparaGOLIN()
 {
+    //implementar um check de booleano se tiver versão
+    //e outro se a versão fizer parte do produto local local
+
+    //para produto local;descrição;produto externo. daria pra fazer uma parte só pra mapear essa leitura
+    //que seria bem interessante.
     std::string inputLine {"0003930509;DISPOSITIVO DE CONTROLE DOBRA 1282906/1282907 - Nº 970013272;1282907/1282906 -CONTROLE"};
 
     int maximumDescriptionSize {35};
