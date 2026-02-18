@@ -16,32 +16,45 @@ void JACTOparaGOLIN()
 
     //para produto local;descrição;produto externo. daria pra fazer uma parte só pra mapear essa leitura
     //que seria bem interessante.
-    std::string inputLine {"0003930509;DISPOSITIVO DE CONTROLE DOBRA 1282906/1282907 - Nº 970013272;1282907/1282906 -CONTROLE"};
+    
+           //modelo-> {"I iiiiiiiiii          dddddddddddddddddddddddddddddddddd PC iiiiiiiiiiiiiiiiii          00039310"}
+                        //itemGOLIN           descrição                             item JACTO                  cod. cli
+    int maximumDescriptionSize {34};
+    
+    std::ifstream iFile {"IN/produtosJACTOparaGOLIN.csv"};
+    std::ofstream oFile {"OUT/itensJACTOparaGOLIN.prn"};
+    
+    std::string inputLine;
+    while (std::getline(iFile, inputLine))
+    {
+        std::string basic {"I                                                        PC                             00039310"};
+        int firstCommaIndex         {static_cast<int>(inputLine.find_first_of(';'))};
+        int secondCommaIndex        {static_cast<int>(inputLine.substr(firstCommaIndex + 1).find_first_of(';')) + firstCommaIndex + 1};
 
-    int maximumDescriptionSize {35};
+        int localProductStart       {0};
+        int localProductSize        {firstCommaIndex};
 
-    int firstCommaIndex         {static_cast<int>(inputLine.find_first_of(';'))};
-    int secondCommaIndex        {static_cast<int>(inputLine.substr(firstCommaIndex + 1).find_first_of(';')) + firstCommaIndex + 1};
+        int descriptionStart        {firstCommaIndex + 1};
+        int descriptionSize         {secondCommaIndex - firstCommaIndex - 1};
 
-    int localProductStart       {0};
-    int localProductSize        {firstCommaIndex};
+        int externalProductStart    {secondCommaIndex + 1};
+        int externalProductSize     {static_cast<int>(inputLine.find_first_of('\n')) - 1};
 
-    int descriptionStart        {firstCommaIndex + 1};
-    int descriptionSize         {secondCommaIndex - firstCommaIndex - 1};
+        std::string localProduct    {inputLine.substr(localProductStart, localProductSize)};
 
-    int externalProductStart    {secondCommaIndex + 1};
-    int externalProductSize     {static_cast<int>(inputLine.find_first_of('\n')) - 1};
+        std::string description     {inputLine.substr(descriptionStart, descriptionSize)};    
+        if (description.size() > maximumDescriptionSize) description.resize(maximumDescriptionSize);
 
-    std::string localProduct    {inputLine.substr(localProductStart, localProductSize)};
+        std::string externalProduct {inputLine.substr(externalProductStart)};
+        externalProduct.pop_back(); //this removes the extra whitespace.
 
-    std::string description     {inputLine.substr(descriptionStart, descriptionSize)};    
-    if (description.size() > maximumDescriptionSize) description.resize(maximumDescriptionSize);
-
-    std::string externalProduct {inputLine.substr(externalProductStart, externalProductSize)};
-
-    std::cout   << localProduct     << " ends localProduct \n"
-                << description      << " ends description \n"
-                << externalProduct  << " ends externalProduct\n";
+        basic.replace(2, localProduct.size(), localProduct);
+        basic.replace(22, description.size(), description);
+        basic.replace(60, externalProduct.size(), externalProduct);
+        
+        oFile << basic << '\n';
+    }
+    return;
 }
 
 void paraVOLVO()
