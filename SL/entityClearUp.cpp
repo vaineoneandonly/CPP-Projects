@@ -34,6 +34,7 @@ int main()
     for (int i = 0; i < nameList.size() - 1; ++i)
     {
         std::string aooga;
+
         if (nameList[i] == nameList[i+1] || nameList[i] == nameList[i-1])
         {
             aooga = nameList[i].substr(0, nameList[i].size() - 1) + " - " + placeList[i];
@@ -42,7 +43,7 @@ int main()
         {
             aooga = nameList[i];         
         }
-
+        
         outputFile << aooga << '\n';
     }
 }
