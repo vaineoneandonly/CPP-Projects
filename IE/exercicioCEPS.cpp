@@ -21,13 +21,13 @@ string checarCEP(int CEP, map<string, pair<int, int>> mapa)
     }
 }
 
-bool checarTransicao(vector<vector<float>> t, int origem, int destino, vector<float> soma)
+bool checarTransicao(const vector<vector<float>> t, int origem, int destino, vector<float> soma)
 {
     cout << "checando transição do índice " << origem << " para o índice " << destino << '\n';
     soma.push_back(t[origem][destino]);
     if (t[origem][destino] != 0)
     {
-        for (auto v : soma) cout << v << " - ";
+        for (auto v : soma) cout << v << " -> ";
         cout << "\n";
 
         return true;
@@ -36,7 +36,10 @@ bool checarTransicao(vector<vector<float>> t, int origem, int destino, vector<fl
     {
         for (int i = 0; i < t.size(); ++i) 
         {
-            if (t[i][destino] != 0) checarTransicao(t, i, destino, soma);
+            if (t[i][destino] != 0) 
+            {
+                checarTransicao(t, i, destino, soma);
+            }
         }
     }
 
