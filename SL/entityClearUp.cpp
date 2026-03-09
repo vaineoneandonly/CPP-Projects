@@ -7,8 +7,8 @@ int main()
     //one line for the name, one line for the description. Description doesn't matter if
     //the name of the entity is different from the next one.
 
-    std::ifstream inputFile {"IN/parceiros.txt"};
-    std::ofstream outputFile {"OUT/parceirosFORTBRAS.txt"};
+    std::ifstream inputFile {"IN/entidadesParaAcessar.txt"};
+    std::ofstream outputFile {"OUT/novaEntidadesParaAcessar.txt"};
 
     std::vector<std::string>  nameList;
     std::vector<std::string> placeList;
