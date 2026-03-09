@@ -7,7 +7,7 @@
 
 using namespace std;
 
-void checarCEP(int CEP, map<string, pair<int, int>> mapa)
+string checarCEP(int CEP, map<string, pair<int, int>> mapa)
 {
     for (auto faixa : mapa)
     {
@@ -15,9 +15,32 @@ void checarCEP(int CEP, map<string, pair<int, int>> mapa)
         {
             std::cout << "CEP " << CEP << " encontrado na cidade " << faixa.first 
                       << " (CEPs entre " << faixa.second.first << " e " << faixa.second.second << ")\n";
-            break;
+
+            return faixa.first;
         } 
     }
+}
+
+bool checarTransicao(vector<vector<float>> t, int origem, int destino, vector<float> soma)
+{
+    cout << "checando transição do índice " << origem << " para o índice " << destino << '\n';
+    soma.push_back(t[origem][destino]);
+    if (t[origem][destino] != 0)
+    {
+        for (auto v : soma) cout << v << " - ";
+        cout << "\n";
+
+        return true;
+    }
+    else
+    {
+        for (int i = 0; i < t.size(); ++i) 
+        {
+            if (t[i][destino] != 0) checarTransicao(t, i, destino, soma);
+        }
+    }
+
+    return false;
 }
 
 int main()
@@ -57,11 +80,11 @@ int main()
         }
     }
 
-    for (auto u : unicos)
-    {
-        cout << u << " - "; 
-    }
-    cout << '\n';
+    //for (auto u : unicos)
+    //{
+    //    cout << u << " - "; 
+    //}
+    //cout << '\n';
 
     vector<vector<float>> t {unicos.size(), vector<float>(unicos.size(), 0)};
 
@@ -77,6 +100,23 @@ int main()
         auto j {find(unicos.begin(), unicos.end(), destino) - unicos.begin()};
 
         t[i][j] = valorCorrida;
+        t[j][i] = valorCorrida;
     }
-}
 
+    //for (int i = 0; i < unicos.size(); ++i)
+    //{
+    //    for (int j = 0; j < unicos.size(); ++j)
+    //    {
+    //        cout << t[i][j] << ';';
+    //    }
+    //    cout << '\n';
+    //}
+
+    string   esseCEP {checarCEP(10001086, mapaDeFaixas)};
+    string aqueleCEP {checarCEP(80000245, mapaDeFaixas)};
+
+    auto   indiceDesseCEP {find(unicos.begin(), unicos.end(),   esseCEP) - unicos.begin()};
+    auto indiceDaqueleCEP {find(unicos.begin(), unicos.end(), aqueleCEP) - unicos.begin()};
+
+    checarTransicao(t, indiceDesseCEP, indiceDaqueleCEP, vector<float>(0.0));
+}
