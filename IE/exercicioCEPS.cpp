@@ -21,7 +21,7 @@ string checarCEP(int CEP, map<string, pair<int, int>> mapa)
     }
 }
 
-bool checarTransicao(const vector<vector<float>> t, int origem, int destino, vector<float> soma)
+bool checarTransicao(const vector<vector<float>> &t, int origem, int destino, vector<float> soma)
 {
     cout << "checando transição do índice " << origem << " para o índice " << destino << '\n';
     soma.push_back(t[origem][destino]);
@@ -38,7 +38,15 @@ bool checarTransicao(const vector<vector<float>> t, int origem, int destino, vec
         {
             if (t[i][destino] != 0) 
             {
-                checarTransicao(t, i, destino, soma);
+                checarTransicao(t, origem, i, soma);
+                if (t[origem][i] != 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
         }
     }
@@ -83,12 +91,6 @@ int main()
         }
     }
 
-    //for (auto u : unicos)
-    //{
-    //    cout << u << " - "; 
-    //}
-    //cout << '\n';
-
     vector<vector<float>> t {unicos.size(), vector<float>(unicos.size(), 0)};
 
     string novaLinha;
@@ -105,15 +107,6 @@ int main()
         t[i][j] = valorCorrida;
         t[j][i] = valorCorrida;
     }
-
-    //for (int i = 0; i < unicos.size(); ++i)
-    //{
-    //    for (int j = 0; j < unicos.size(); ++j)
-    //    {
-    //        cout << t[i][j] << ';';
-    //    }
-    //    cout << '\n';
-    //}
 
     string   esseCEP {checarCEP(10001086, mapaDeFaixas)};
     string aqueleCEP {checarCEP(80000245, mapaDeFaixas)};
