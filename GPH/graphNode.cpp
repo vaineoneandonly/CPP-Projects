@@ -2,6 +2,7 @@
 #include <vector>
 #include <map>
 #include <bits/stdc++.h>
+#include <stack>
 
 using namespace std;
 
@@ -38,24 +39,80 @@ struct graph
         }
         cout << '\n';
     }
+
+    void printEdgesFrom(T v)
+    {
+        for (auto e : valueMap[v])
+        {
+            cout << e << '\n'; 
+    
+        }
+    }
+
+    vector<T> getEdgesFrom(T v)
+    {
+        return valueMap[v];
+    }
+
+    void depthTraverseFrom(T v1)
+    {
+        stack<T> depthStack;
+
+        T current {v1};
+        depthStack.push(current);
+
+        vector<T> a {getEdgesFrom(current)};
+
+        while (!depthStack.empty())
+        {
+            for (auto e : a)
+            {
+                depthStack.push(e);
+            }
+
+            cout << current << ' ';
+            current = depthStack.top();
+
+            a = getEdgesFrom(current);
+
+            depthStack.pop();
+        }
+    }
 };
 
-int main()
+void testIntGraphFrom(int n)
 {
     graph<int> g1;
     g1.addNode(2, {1, 3, 4});
     g1.addEdges(2, {9});
     g1.addNode(1, {3});
     g1.addNode(4, {1, 3});
-    g1.printValueMap();
+    //g1.printValueMap();
 
     g1.addEdges(5, {7, 8, 9});
-    g1.printValueMap();
+    //g1.printValueMap();
 
     g1.addNode(8, {2, 3, 4});
-    g1.printValueMap();
+    //g1.printValueMap();
+    
+    g1.depthTraverseFrom(n);
+}
 
+void testCharGraphFrom(char c)
+{
     graph<char> g2;
-    g2.addNode('F', {'S', 'A', 'Y'});
-    g2.printValueMap();
+    g2.addNode('A', {'B', 'C'});
+    g2.addNode('B', {'D'});
+    g2.addNode('C', {'E'});
+    g2.addNode('D', {'F'});
+    g2.addNode('E', {});
+    //g2.printValueMap();
+
+    g2.depthTraverseFrom(c);
+}
+
+int main()
+{
+    testIntGraphFrom(2);
+    testCharGraphFrom('A');
 }
