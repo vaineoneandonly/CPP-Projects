@@ -4,6 +4,7 @@
 #include <vector>
 #include <algorithm>
 #include <bits/stdc++.h>
+#include <limits>
 
 using namespace std;
 
@@ -19,6 +20,8 @@ string checarCEP(int CEP, map<string, pair<int, int>> mapa)
             return faixa.first;
         } 
     }
+
+    return "";
 }
 
 bool checarTransicao(vector<vector<float>> t, int origem, int destino, vector<float> soma)
@@ -53,6 +56,73 @@ bool checarTransicao(vector<vector<float>> t, int origem, int destino, vector<fl
 
     return false;
 }
+
+int encontrarIdxMaisProximo(vector<vector<float>> grafo, int origem)
+{
+    int idxMaisProximo {-1};
+    float valorMaisProximo {numeric_limits<float>::max()};
+    for (int i = 0; i < grafo[origem].size(); ++i)
+    {
+        if (grafo[origem][i] != 0 && grafo[origem][i] < valorMaisProximo)
+        {
+            idxMaisProximo = i;
+            valorMaisProximo = grafo[origem][i]; 
+        }    
+    }
+
+    return idxMaisProximo;
+}
+
+int encontrarIdxMaisProximoNaoConhecido(vector<vector<float>> grafo, vector<bool> conhecidos, int origem)
+{
+    int idxMaisProximo {-1};
+    float valorMaisProximo {numeric_limits<float>::max()};
+    for (int i = 0; i < grafo[origem].size(); ++i)
+    {
+        if (!conhecidos[i] && grafo[origem][i] != 0 && grafo[origem][i] < valorMaisProximo)
+        {
+            idxMaisProximo = i;
+            valorMaisProximo = grafo[origem][i]; 
+        }    
+    }
+
+    return idxMaisProximo;
+}
+
+void menorCaminho(vector<vector<float>> grafo, vector<string> unicos, int idxOrigem)
+{
+    vector<bool> conhecidos;
+    vector<float> distanciaPara;
+
+    int qtdConhecidos {0};
+    for (int i = 0; i < unicos.size(); ++i)
+    {
+        conhecidos.push_back(false);
+        distanciaPara.push_back(numeric_limits<float>::max());
+    }
+
+    distanciaPara[idxOrigem] = 0;
+    
+    int z {encontrarIdxMaisProximoNaoConhecido(grafo, conhecidos, idxOrigem)};
+    cout << z << '\n';
+    conhecidos[z] = true;
+    ++qtdConhecidos;
+
+    z = encontrarIdxMaisProximoNaoConhecido(grafo, conhecidos, idxOrigem);
+    cout << z << '\n';
+    conhecidos[z] = true;
+    ++qtdConhecidos;
+
+    int xxx {0};
+    while (qtdConhecidos < conhecidos.size())
+    {
+        cout << conhecidos[xxx];
+        conhecidos[xxx] = !conhecidos[xxx];
+        ++xxx;
+        ++qtdConhecidos;
+    }
+}
+
 
 int main(int argc, char *argv[])
 {
@@ -114,5 +184,6 @@ int main(int argc, char *argv[])
     auto   indiceDesseCEP {find(unicos.begin(), unicos.end(),   esseCEP) - unicos.begin()};
     auto indiceDaqueleCEP {find(unicos.begin(), unicos.end(), aqueleCEP) - unicos.begin()};
 
-    checarTransicao(t, indiceDesseCEP, indiceDaqueleCEP, {0});
+    //checarTransicao(t, indiceDesseCEP, indiceDaqueleCEP, {0});
+    menorCaminho(t, unicos, indiceDesseCEP);
 }
