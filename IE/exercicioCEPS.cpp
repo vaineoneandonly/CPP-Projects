@@ -89,12 +89,31 @@ int encontrarIdxMaisProximoNaoConhecido(vector<vector<float>> grafo, vector<bool
     return idxMaisProximo;
 }
 
+bool todosVisitados(vector<bool>conhecidos)
+{
+    for (auto c : conhecidos)
+    {
+        if (c == false) return false; 
+    }
+
+    return true;
+}
+
+template <typename T>
+void mostrarVetor(vector<T> v)
+{
+    for (auto e : v)
+    {
+        cout << e << ";\n";
+    }
+    cout << '\n';
+}
+
 void menorCaminho(vector<vector<float>> grafo, vector<string> unicos, int idxOrigem)
 {
     vector<bool> conhecidos;
     vector<float> distanciaPara;
 
-    int qtdConhecidos {0};
     for (int i = 0; i < unicos.size(); ++i)
     {
         conhecidos.push_back(false);
@@ -102,15 +121,54 @@ void menorCaminho(vector<vector<float>> grafo, vector<string> unicos, int idxOri
     }
 
     distanciaPara[idxOrigem] = 0;
+
+    mostrarVetor(distanciaPara);
     
-    while (qtdConhecidos < conhecidos.size())
+    int i {idxOrigem};
+    for (int z = 0; z < unicos.size(); ++z)
     {
-        int z {encontrarIdxMaisProximoNaoConhecido(grafo, conhecidos, idxOrigem)};
-        cout << z << '\n';
-        if (z != -1) conhecidos[z] = true; 
-        
-        ++qtdConhecidos;
+        if (grafo[i][z] < distanciaPara[z] && grafo[i][z] != 0)
+        {
+            if (distanciaPara[z] == numeric_limits<float>::max())
+            {
+                distanciaPara[z] = grafo[i][z]; 
+            }
+            else
+            {
+                distanciaPara[z] += grafo[i][z];
+            }
+        }
     }
+    mostrarVetor(distanciaPara);
+    conhecidos[i] = true;
+
+    i = encontrarIdxMaisProximoNaoConhecido(grafo, conhecidos, i);
+
+
+    for (int z = 0; z < unicos.size(); ++z)
+    {
+        if (grafo[i][z] < distanciaPara[z] && grafo[i][z] != 0)
+        {
+            if (distanciaPara[z] == numeric_limits<float>::max())
+            {
+                distanciaPara[z] = grafo[i][z]; 
+            }
+            else
+            {
+                distanciaPara[z] += grafo[i][z];
+            }
+        }
+    }
+    mostrarVetor(distanciaPara);
+
+    //while (!todosVisitados(conhecidos))
+    //{
+    //    for (int j = 0; j < unicos.size(); ++j)
+    //    {
+    //        distanciaPara[j] += grafo[i][j];
+    //        cout << distanciaPara[j];
+    //    }
+    //}
 }
 
 
