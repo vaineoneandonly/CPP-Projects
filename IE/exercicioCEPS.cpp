@@ -21,7 +21,7 @@ string checarCEP(int CEP, map<string, pair<int, int>> mapa)
     }
 }
 
-bool checarTransicao(const vector<vector<float>> &t, int origem, int destino, vector<float> soma)
+bool checarTransicao(vector<vector<float>> t, int origem, int destino, vector<float> soma)
 {
     cout << "checando transição do índice " << origem << " para o índice " << destino << '\n';
     soma.push_back(t[origem][destino]);
@@ -54,7 +54,7 @@ bool checarTransicao(const vector<vector<float>> &t, int origem, int destino, ve
     return false;
 }
 
-int main()
+int main(int argc, char *argv[])
 {
     map<string, pair<int, int>> mapaDeFaixas;
     
@@ -114,5 +114,5 @@ int main()
     auto   indiceDesseCEP {find(unicos.begin(), unicos.end(),   esseCEP) - unicos.begin()};
     auto indiceDaqueleCEP {find(unicos.begin(), unicos.end(), aqueleCEP) - unicos.begin()};
 
-    checarTransicao(t, indiceDesseCEP, indiceDaqueleCEP, vector<float>(0.0));
+    checarTransicao(t, indiceDesseCEP, indiceDaqueleCEP, {0});
 }
