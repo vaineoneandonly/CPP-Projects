@@ -103,22 +103,12 @@ void menorCaminho(vector<vector<float>> grafo, vector<string> unicos, int idxOri
 
     distanciaPara[idxOrigem] = 0;
     
-    int z {encontrarIdxMaisProximoNaoConhecido(grafo, conhecidos, idxOrigem)};
-    cout << z << '\n';
-    conhecidos[z] = true;
-    ++qtdConhecidos;
-
-    z = encontrarIdxMaisProximoNaoConhecido(grafo, conhecidos, idxOrigem);
-    cout << z << '\n';
-    conhecidos[z] = true;
-    ++qtdConhecidos;
-
-    int xxx {0};
     while (qtdConhecidos < conhecidos.size())
     {
-        cout << conhecidos[xxx];
-        conhecidos[xxx] = !conhecidos[xxx];
-        ++xxx;
+        int z {encontrarIdxMaisProximoNaoConhecido(grafo, conhecidos, idxOrigem)};
+        cout << z << '\n';
+        if (z != -1) conhecidos[z] = true; 
+        
         ++qtdConhecidos;
     }
 }
