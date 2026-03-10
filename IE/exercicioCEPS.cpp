@@ -2,177 +2,18 @@
 #include <fstream>
 #include <map>
 #include <vector>
-#include <algorithm>
 #include <bits/stdc++.h>
 #include <limits>
 
+#include "grafoV1.cpp"
+#include "grafoV2.cpp"
+#include "grafoV3.cpp"
+#include "vectorTools.cpp"
+#include "definicoesCEP.cpp"
+
 using namespace std;
 
-string checarCEP(int CEP, map<string, pair<int, int>> mapa)
-{
-    for (auto faixa : mapa)
-    {
-        if (CEP > faixa.second.first && CEP < faixa.second.second)
-        {
-            std::cout << "CEP " << CEP << " encontrado na cidade " << faixa.first 
-                      << " (CEPs entre " << faixa.second.first << " e " << faixa.second.second << ")\n";
-
-            return faixa.first;
-        } 
-    }
-
-    return "";
-}
-
-bool checarTransicao(vector<vector<float>> t, int origem, int destino, vector<float> soma)
-{
-    cout << "checando transição do índice " << origem << " para o índice " << destino << '\n';
-    soma.push_back(t[origem][destino]);
-    if (t[origem][destino] != 0)
-    {
-        for (auto v : soma) cout << v << " -> ";
-        cout << "\n";
-
-        return true;
-    }
-    else
-    {
-        for (int i = 0; i < t.size(); ++i) 
-        {
-            if (t[i][destino] != 0) 
-            {
-                checarTransicao(t, origem, i, soma);
-                if (t[origem][i] != 0)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
-    }
-
-    return false;
-}
-
-int encontrarIdxMaisProximo(vector<vector<float>> grafo, int origem)
-{
-    int idxMaisProximo {-1};
-    float valorMaisProximo {numeric_limits<float>::max()};
-    for (int i = 0; i < grafo[origem].size(); ++i)
-    {
-        if (grafo[origem][i] != 0 && grafo[origem][i] < valorMaisProximo)
-        {
-            idxMaisProximo = i;
-            valorMaisProximo = grafo[origem][i]; 
-        }    
-    }
-
-    return idxMaisProximo;
-}
-
-int encontrarIdxMaisProximoNaoConhecido(vector<vector<float>> grafo, vector<bool> conhecidos, int origem)
-{
-    int idxMaisProximo {-1};
-    float valorMaisProximo {numeric_limits<float>::max()};
-    for (int i = 0; i < grafo[origem].size(); ++i)
-    {
-        if (!conhecidos[i] && grafo[origem][i] != 0 && grafo[origem][i] < valorMaisProximo)
-        {
-            idxMaisProximo = i;
-            valorMaisProximo = grafo[origem][i]; 
-        }    
-    }
-
-    return idxMaisProximo;
-}
-
-bool todosVisitados(vector<bool>conhecidos)
-{
-    for (auto c : conhecidos)
-    {
-        if (c == false) return false; 
-    }
-
-    return true;
-}
-
-template <typename T>
-void mostrarVetor(vector<T> v)
-{
-    for (auto e : v)
-    {
-        cout << e << ";\n";
-    }
-    cout << '\n';
-}
-
-void menorCaminho(vector<vector<float>> grafo, vector<string> unicos, int idxOrigem)
-{
-    vector<bool> conhecidos;
-    vector<float> distanciaPara;
-
-    for (int i = 0; i < unicos.size(); ++i)
-    {
-        conhecidos.push_back(false);
-        distanciaPara.push_back(numeric_limits<float>::max());
-    }
-
-    distanciaPara[idxOrigem] = 0;
-
-    mostrarVetor(distanciaPara);
-    
-    int i {idxOrigem};
-    for (int z = 0; z < unicos.size(); ++z)
-    {
-        if (grafo[i][z] < distanciaPara[z] && grafo[i][z] != 0)
-        {
-            if (distanciaPara[z] == numeric_limits<float>::max())
-            {
-                distanciaPara[z] = grafo[i][z]; 
-            }
-            else
-            {
-                distanciaPara[z] += grafo[i][z];
-            }
-        }
-    }
-    mostrarVetor(distanciaPara);
-    conhecidos[i] = true;
-
-    i = encontrarIdxMaisProximoNaoConhecido(grafo, conhecidos, i);
-
-
-    for (int z = 0; z < unicos.size(); ++z)
-    {
-        if (grafo[i][z] < distanciaPara[z] && grafo[i][z] != 0)
-        {
-            if (distanciaPara[z] == numeric_limits<float>::max())
-            {
-                distanciaPara[z] = grafo[i][z]; 
-            }
-            else
-            {
-                distanciaPara[z] += grafo[i][z];
-            }
-        }
-    }
-    mostrarVetor(distanciaPara);
-
-    //while (!todosVisitados(conhecidos))
-    //{
-    //    for (int j = 0; j < unicos.size(); ++j)
-    //    {
-    //        distanciaPara[j] += grafo[i][j];
-    //        cout << distanciaPara[j];
-    //    }
-    //}
-}
-
-
-int main(int argc, char *argv[])
+int main()
 {
     map<string, pair<int, int>> mapaDeFaixas;
     
@@ -209,7 +50,7 @@ int main(int argc, char *argv[])
         }
     }
 
-    vector<vector<float>> t {unicos.size(), vector<float>(unicos.size(), 0)};
+    vector<vector<float>> grafo {unicos.size(), vector<float>(unicos.size(), 0)};
 
     string novaLinha;
     ifstream nt {"IN/transicoes"};
@@ -222,8 +63,8 @@ int main(int argc, char *argv[])
         auto i {find(unicos.begin(), unicos.end(),  origem) - unicos.begin()};
         auto j {find(unicos.begin(), unicos.end(), destino) - unicos.begin()};
 
-        t[i][j] = valorCorrida;
-        t[j][i] = valorCorrida;
+        grafo[i][j] = valorCorrida;
+        grafo[j][i] = valorCorrida;
     }
 
     string   esseCEP {checarCEP(10001086, mapaDeFaixas)};
@@ -232,6 +73,6 @@ int main(int argc, char *argv[])
     auto   indiceDesseCEP {find(unicos.begin(), unicos.end(),   esseCEP) - unicos.begin()};
     auto indiceDaqueleCEP {find(unicos.begin(), unicos.end(), aqueleCEP) - unicos.begin()};
 
-    //checarTransicao(t, indiceDesseCEP, indiceDaqueleCEP, {0});
-    menorCaminho(t, unicos, indiceDesseCEP);
+    //menor caminho 2
+    mc2(grafo, unicos, indiceDesseCEP);
 }
