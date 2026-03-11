@@ -3,6 +3,7 @@
 #include <map>
 #include <bits/stdc++.h>
 #include <stack>
+#include <queue>
 
 using namespace std;
 
@@ -23,6 +24,7 @@ struct graph
             valueMap[n].push_back(v);
         }
     }
+
     void printValueMap()
     {
         for (auto v : valueMap)
@@ -45,7 +47,6 @@ struct graph
         for (auto e : valueMap[v])
         {
             cout << e << '\n'; 
-    
         }
     }
 
@@ -54,28 +55,51 @@ struct graph
         return valueMap[v];
     }
 
-    void depthTraverseFrom(T v1)
+    void depthTraverseFrom(T n)
     {
         stack<T> depthStack;
 
-        T current {v1};
+        T current {n};
         depthStack.push(current);
-
-        vector<T> a {getEdgesFrom(current)};
 
         while (!depthStack.empty())
         {
+            vector<T> a {getEdgesFrom(current)};
             for (auto e : a)
             {
                 depthStack.push(e);
             }
 
             cout << current << ' ';
+            
             current = depthStack.top();
-
             a = getEdgesFrom(current);
 
             depthStack.pop();
+        }
+    }
+
+    void breadthTraverseFrom(T n)
+    {
+        queue<T> breadthQueue;
+        
+        T current {n};
+        breadthQueue.push(n);
+
+        while (!breadthQueue.empty())
+        {            
+            vector<T> a {getEdgesFrom(current)};
+            for (auto e : a)
+            {
+                breadthQueue.push(e);                
+            }
+
+            cout << current << ' ';
+
+            breadthQueue.pop();
+            current = breadthQueue.front();
+            
+            a = getEdgesFrom(current);
         }
     }
 };
@@ -108,11 +132,12 @@ void testCharGraphFrom(char c)
     g2.addNode('E', {});
     //g2.printValueMap();
 
-    g2.depthTraverseFrom(c);
+    //g2.depthTraverseFrom(c);
+    g2.breadthTraverseFrom(c);
 }
 
-int main()
+int main(int argc, char **argv)
 {
-    testIntGraphFrom(2);
-    testCharGraphFrom('A');
+    //testIntGraphFrom(2);
+    testCharGraphFrom(*argv[1]);
 }
