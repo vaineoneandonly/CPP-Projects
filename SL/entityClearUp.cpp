@@ -2,13 +2,16 @@
 #include <fstream>
 #include <vector>
 
-int main()
+int main(int argc, char *argv[])
 {
     //one line for the name, one line for the description. Description doesn't matter if
     //the name of the entity is different from the next one.
 
-    std::ifstream inputFile {"IN/entidadesParaAcessar.txt"};
-    std::ofstream outputFile {"OUT/novaEntidadesParaAcessar.txt"};
+    std::string caminhoEntrada {argv[1]};
+    std::string caminhoSaida {argv[2]};
+
+    std::ifstream inputFile {caminhoEntrada};
+    std::ofstream outputFile {caminhoSaida};
 
     std::vector<std::string>  nameList;
     std::vector<std::string> placeList;
